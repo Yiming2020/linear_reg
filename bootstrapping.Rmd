@@ -6,7 +6,7 @@ output: github_document
 ```{r setup, include = FALSE}
 library(tidyverse)
 library(rsample)
-
+library(p8105.datasets)
 
 knitr::opts_chunk$set(
   fig.width = 6,
@@ -199,6 +199,69 @@ sim_df_nonconst %>%
   knitr::kable(digits = 3)
 ```
  
+ ## revisit nyc airbnb
+ 
+```{r}
+data("nyc_airbnb")
+
+nyc_airbnb = 
+  nyc_airbnb %>% 
+  mutate(stars = review_scores_location / 2) %>% 
+  rename(
+    boro = neighbourhood_group,
+    neighborhood = neighbourhood) %>% 
+  filter(boro != "Staten Island") %>% 
+  select(price, stars, boro, neighborhood, room_type)
+```
  
 
+```{r}
+nyc_airbnb %>% 
+  ggplot(aes(x = stars, y = price, color = room_type)) + 
+  geom_point() 
+```
 
+
+
+```{r}
+nyc_airbnb %>% 
+  filter(boro == "Manhattan") %>% 
+  drop_na(stars) %>% 
+  modelr::bootstrap(n = 1000) %>% 
+  mutate(
+    models = map(strap, ~ lm(price ~ stars + room_type, data = .x)),
+    results = map(models, broom::tidy)) %>% 
+  select(results) %>% 
+  unnest(results) %>% 
+  group_by(term) %>% 
+  summarize(
+    mean_est = mean(estimate),
+    boot_se = sd(estimate)) %>% 
+  knitr::kable(digits = 3)
+```
+
+
+compare this to `lm`
+
+```{r}
+nyc_airbnb %>% 
+  filter(boro == "Manhattan") %>% 
+  drop_na(stars) %>% 
+  lm(price ~ stars, data = .) %>% 
+  broom::tidy()
+```
+
+
+```{r}
+nyc_airbnb %>% 
+  filter(boro == "Manhattan") %>% 
+  drop_na(stars) %>% 
+  modelr::bootstrap(n = 1000) %>% 
+  mutate(
+    models = map(strap, ~ lm(price ~ stars + room_type, data = .x)),
+    results = map(models, broom::tidy)) %>% 
+  select(results) %>% 
+  unnest(results) %>% 
+  filter(term == "stars") %>% 
+  ggplot(aes(x = estimate)) + geom_density()
+```

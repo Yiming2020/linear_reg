@@ -45,8 +45,8 @@ lm(y ~ x, data = sim_df_const) %>%
 
 | term        | estimate | std.error | statistic | p.value |
 | :---------- | -------: | --------: | --------: | ------: |
-| (Intercept) |    2.065 |     0.086 |    23.998 |       0 |
-| x           |    2.991 |     0.061 |    49.302 |       0 |
+| (Intercept) |    1.917 |     0.084 |    22.877 |       0 |
+| x           |    3.067 |     0.060 |    51.385 |       0 |
 
 ``` r
 lm(y ~ x, data = sim_df_nonconst) %>% 
@@ -56,8 +56,8 @@ lm(y ~ x, data = sim_df_nonconst) %>%
 
 | term        | estimate | std.error | statistic | p.value |
 | :---------- | -------: | --------: | --------: | ------: |
-| (Intercept) |    2.013 |     0.088 |    22.758 |       0 |
-| x           |    3.023 |     0.062 |    48.476 |       0 |
+| (Intercept) |    2.098 |     0.084 |    25.057 |       0 |
+| x           |    2.939 |     0.060 |    49.292 |       0 |
 
 ## draw one bootstrap sample
 
@@ -125,18 +125,18 @@ boot_straps %>% pull(strap_sample) %>% .[[1]]
 ```
 
     ## # A tibble: 250 x 3
-    ##         x    error     y
-    ##     <dbl>    <dbl> <dbl>
-    ##  1  1.94  -0.716    7.10
-    ##  2 -1.13  -0.0438  -1.43
-    ##  3  1.38   0.00406  6.15
-    ##  4  0.337 -0.391    2.62
-    ##  5  0.815  0.480    4.92
-    ##  6  0.982  0.487    5.43
-    ##  7  0.406 -0.479    2.74
-    ##  8  1.07  -0.781    4.43
-    ##  9  0.156 -0.00644  2.46
-    ## 10  2.40   1.71    10.9 
+    ##         x   error      y
+    ##     <dbl>   <dbl>  <dbl>
+    ##  1  1.03  -0.421   4.67 
+    ##  2  1.00  -0.251   4.75 
+    ##  3  1.24  -0.982   4.73 
+    ##  4  0.465 -0.144   3.25 
+    ##  5  2.64  -0.399   9.51 
+    ##  6  1.38  -0.375   5.75 
+    ##  7  1.38  -0.375   5.75 
+    ##  8 -0.340 -0.0445  0.935
+    ##  9  1.23   0.155   5.84 
+    ## 10  3.69  -1.07   12.0  
     ## # … with 240 more rows
 
 ``` r
@@ -148,34 +148,34 @@ boot_straps %>%
 
     ## [[1]]
     ## # A tibble: 250 x 3
-    ##         x   error       y
-    ##     <dbl>   <dbl>   <dbl>
-    ##  1 -1.13  -0.0438 -1.43  
-    ##  2 -1.01  -0.596  -1.64  
-    ##  3 -1.01  -0.596  -1.64  
-    ##  4 -0.806  0.754   0.336 
-    ##  5 -0.806  0.754   0.336 
-    ##  6 -0.806  0.754   0.336 
-    ##  7 -0.625 -0.0889  0.0369
-    ##  8 -0.556 -0.614  -0.282 
-    ##  9 -0.488 -0.402   0.134 
-    ## 10 -0.483  0.764   1.31  
+    ##         x  error       y
+    ##     <dbl>  <dbl>   <dbl>
+    ##  1 -1.78  -1.40  -4.73  
+    ##  2 -1.78  -1.40  -4.73  
+    ##  3 -1.70   1.44  -1.67  
+    ##  4 -1.70   1.44  -1.67  
+    ##  5 -1.70   1.44  -1.67  
+    ##  6 -1.66   1.99  -0.999 
+    ##  7 -1.66   1.99  -0.999 
+    ##  8 -0.955  1.04   0.177 
+    ##  9 -0.955  1.04   0.177 
+    ## 10 -0.868  0.537 -0.0678
     ## # … with 240 more rows
     ## 
     ## [[2]]
     ## # A tibble: 250 x 3
-    ##         x   error       y
-    ##     <dbl>   <dbl>   <dbl>
-    ##  1 -1.13  -0.0438 -1.43  
-    ##  2 -1.01  -0.596  -1.64  
-    ##  3 -1.01  -0.596  -1.64  
-    ##  4 -1.01  -0.596  -1.64  
-    ##  5 -0.806  0.754   0.336 
-    ##  6 -0.806  0.754   0.336 
-    ##  7 -0.806  0.754   0.336 
-    ##  8 -0.732 -0.193  -0.389 
-    ##  9 -0.732 -0.193  -0.389 
-    ## 10 -0.625 -0.0889  0.0369
+    ##         x    error         y
+    ##     <dbl>    <dbl>     <dbl>
+    ##  1 -1.78  -1.40    -4.73    
+    ##  2 -1.66   1.99    -0.999   
+    ##  3 -1.66   1.99    -0.999   
+    ##  4 -0.868  0.537   -0.0678  
+    ##  5 -0.700  1.18     1.08    
+    ##  6 -0.700  1.18     1.08    
+    ##  7 -0.669  0.00815  0.000595
+    ##  8 -0.617  0.0335   0.181   
+    ##  9 -0.617  0.0335   0.181   
+    ## 10 -0.617  0.0335   0.181   
     ## # … with 240 more rows
 
 ``` r
@@ -210,16 +210,16 @@ boot_results
     ## # A tibble: 2,000 x 6
     ##    strap_number term        estimate std.error statistic   p.value
     ##           <int> <chr>          <dbl>     <dbl>     <dbl>     <dbl>
-    ##  1            1 (Intercept)     2.06    0.0782      26.3 1.15e- 73
-    ##  2            1 x               2.96    0.0540      54.7 1.75e-140
-    ##  3            2 (Intercept)     2.00    0.0852      23.5 5.12e- 65
-    ##  4            2 x               3.12    0.0579      53.9 6.85e-139
-    ##  5            3 (Intercept)     1.97    0.0809      24.3 1.45e- 67
-    ##  6            3 x               3.08    0.0576      53.4 5.22e-138
-    ##  7            4 (Intercept)     2.07    0.112       18.5 1.96e- 48
-    ##  8            4 x               2.91    0.0761      38.2 7.27e-106
-    ##  9            5 (Intercept)     2.08    0.0841      24.7 7.87e- 69
-    ## 10            5 x               2.98    0.0580      51.4 3.42e-134
+    ##  1            1 (Intercept)     2.13    0.0820      26.0 7.61e- 73
+    ##  2            1 x               2.84    0.0585      48.6 8.22e-129
+    ##  3            2 (Intercept)     2.03    0.0869      23.4 1.41e- 64
+    ##  4            2 x               2.99    0.0628      47.6 8.24e-127
+    ##  5            3 (Intercept)     2.02    0.0805      25.1 6.78e- 70
+    ##  6            3 x               3.05    0.0597      51.1 1.32e-133
+    ##  7            4 (Intercept)     2.10    0.0754      27.9 2.49e- 78
+    ##  8            4 x               3.00    0.0532      56.4 1.70e-143
+    ##  9            5 (Intercept)     2.00    0.0744      26.8 3.27e- 75
+    ## 10            5 x               2.99    0.0512      58.4 5.82e-147
     ## # … with 1,990 more rows
 
 What do we have now?
@@ -237,8 +237,8 @@ boot_results %>%
 
 | term        | mean\_est | boot\_se |
 | :---------- | --------: | -------: |
-| (Intercept) |     2.013 |    0.062 |
-| x           |     3.017 |    0.096 |
+| (Intercept) |     2.095 |    0.062 |
+| x           |     2.942 |    0.077 |
 
 ``` r
 ## bootstrap help us get the actual standard error under repeated sampling not assuming constant variance
@@ -270,8 +270,8 @@ boot_results %>%
     ## # A tibble: 2 x 3
     ##   term        ci_lower ci_upper
     ##   <chr>          <dbl>    <dbl>
-    ## 1 (Intercept)     1.89     2.14
-    ## 2 x               2.83     3.21
+    ## 1 (Intercept)     1.97     2.21
+    ## 2 x               2.80     3.09
 
 ``` r
 boot_straps %>% 
@@ -309,5 +309,88 @@ sim_df_nonconst %>%
 
 | term        | mean\_est | boot\_se |
 | :---------- | --------: | -------: |
-| (Intercept) |     2.013 |    0.062 |
-| x           |     3.024 |    0.096 |
+| (Intercept) |     2.095 |    0.062 |
+| x           |     2.942 |    0.077 |
+
+\#\# revisit nyc airbnb
+
+``` r
+data("nyc_airbnb")
+
+nyc_airbnb = 
+  nyc_airbnb %>% 
+  mutate(stars = review_scores_location / 2) %>% 
+  rename(
+    boro = neighbourhood_group,
+    neighborhood = neighbourhood) %>% 
+  filter(boro != "Staten Island") %>% 
+  select(price, stars, boro, neighborhood, room_type)
+```
+
+``` r
+nyc_airbnb %>% 
+  ggplot(aes(x = stars, y = price, color = room_type)) + 
+  geom_point() 
+```
+
+    ## Warning: Removed 9962 rows containing missing values (geom_point).
+
+<img src="bootstrapping_files/figure-gfm/unnamed-chunk-15-1.png" width="90%" />
+
+``` r
+nyc_airbnb %>% 
+  filter(boro == "Manhattan") %>% 
+  drop_na(stars) %>% 
+  modelr::bootstrap(n = 1000) %>% 
+  mutate(
+    models = map(strap, ~ lm(price ~ stars + room_type, data = .x)),
+    results = map(models, broom::tidy)) %>% 
+  select(results) %>% 
+  unnest(results) %>% 
+  group_by(term) %>% 
+  summarize(
+    mean_est = mean(estimate),
+    boot_se = sd(estimate)) %>% 
+  knitr::kable(digits = 3)
+```
+
+    ## `summarise()` ungrouping output (override with `.groups` argument)
+
+| term                   | mean\_est | boot\_se |
+| :--------------------- | --------: | -------: |
+| (Intercept)            |    94.593 |   30.605 |
+| room\_typePrivate room | \-123.983 |    3.355 |
+| room\_typeShared room  | \-153.541 |    3.154 |
+| stars                  |    27.324 |    6.234 |
+
+compare this to `lm`
+
+``` r
+nyc_airbnb %>% 
+  filter(boro == "Manhattan") %>% 
+  drop_na(stars) %>% 
+  lm(price ~ stars, data = .) %>% 
+  broom::tidy()
+```
+
+    ## # A tibble: 2 x 5
+    ##   term        estimate std.error statistic  p.value
+    ##   <chr>          <dbl>     <dbl>     <dbl>    <dbl>
+    ## 1 (Intercept)    -34.3     22.9      -1.50 1.35e- 1
+    ## 2 stars           43.3      4.78      9.07 1.39e-19
+
+``` r
+nyc_airbnb %>% 
+  filter(boro == "Manhattan") %>% 
+  drop_na(stars) %>% 
+  modelr::bootstrap(n = 1000) %>% 
+  mutate(
+    models = map(strap, ~ lm(price ~ stars + room_type, data = .x)),
+    results = map(models, broom::tidy)) %>% 
+  select(results) %>% 
+  unnest(results) %>% 
+  filter(term == "stars") %>% 
+  ggplot(aes(x = estimate)) + geom_density()
+```
+
+<img src="bootstrapping_files/figure-gfm/unnamed-chunk-18-1.png" width="90%" />
