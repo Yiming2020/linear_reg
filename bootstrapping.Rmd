@@ -5,6 +5,8 @@ output: github_document
 
 ```{r setup, include = FALSE}
 library(tidyverse)
+library(rsample)
+
 
 knitr::opts_chunk$set(
   fig.width = 6,
@@ -87,4 +89,116 @@ boot_sample(sim_df_nonconst) %>%
   geom_point(alpha = .5) +
   stat_smooth(method = "lm")
 ```
+
+## Many samples and analysis
+
+```{r}
+boot_straps = 
+  data_frame(
+    strap_number = 1:1000,
+    strap_sample = rerun(1000, boot_sample(sim_df_nonconst))
+  )
+
+boot_straps ###相当于做1000次bootstrap，每次都取跟raw data samples size一致的sample数量
+
+boot_straps %>% pull(strap_sample) %>% .[[1]]
+```
+
+
+```{r}
+boot_straps %>% 
+  filter(strap_number %in% 1:2) %>% 
+  mutate(strap_sample = map(strap_sample, ~arrange(.x, x))) %>% 
+  pull(strap_sample)
+
+boot_straps %>% 
+  filter(strap_number %in% 1:3) %>% 
+  unnest(strap_sample) %>% 
+  ggplot(aes(x = x, y = y)) + 
+  geom_point(alpha = .5) +
+  stat_smooth(method = "lm", se = FALSE) +
+  facet_grid(~strap_number) 
+```
+
+
+
+Can I run my analysis on these.. ? yes
+
+```{r}
+boot_results = 
+  boot_straps %>% 
+  mutate(
+    models = map(.x = strap_sample, ~lm(y ~ x, data = .x)),
+    results = map(models, broom::tidy)
+  ) %>% 
+  select(strap_number, results) %>% 
+  unnest(results)
+  
+boot_results
+```
+
+What do we have now?
+
+```{r}
+boot_results %>% 
+  group_by(term) %>% 
+  summarize(
+    mean_est = mean(estimate),
+    boot_se = sd(estimate)) %>% 
+  knitr::kable(digits = 3)
+
+## bootstrap help us get the actual standard error under repeated sampling not assuming constant variance
+```
+
+Look at the distribution
+
+```{r}
+boot_results %>% 
+  filter(term == "x") %>% 
+  ggplot(aes(x = estimate)) +
+  geom_density()
+```
+
+construct bootstrap CI
+
+```{r}
+boot_results %>% 
+  group_by(term) %>% 
+  summarize(
+    ci_lower = quantile(estimate, 0.025), 
+    ci_upper = quantile(estimate, 0.975))
+```
+
+
+```{r}
+boot_straps %>% 
+  unnest(strap_sample) %>% 
+  ggplot(aes(x = x, y = y)) + 
+  geom_line(aes(group = strap_number), stat = "smooth", method = "lm", se = FALSE, alpha = .1, color = "blue") +
+  geom_point(data = sim_df_nonconst, alpha = .5)
+```
+
+
+## Boot strap using modelr
+
+can we simplify anything...?
+ yes
+```{r}
+sim_df_nonconst %>% 
+  bootstraps(1000) %>% 
+  mutate(
+    models = map(.x = splits, ~lm(y ~ x, data = .x)),
+    results = map(models, broom::tidy)
+  ) %>% 
+  select(id, results) %>% 
+  unnest(results) %>% 
+  group_by(term) %>% 
+  summarize(
+    mean_est = mean(estimate),
+    boot_se = sd(estimate)) %>% 
+  knitr::kable(digits = 3)
+```
+ 
+ 
+
 
